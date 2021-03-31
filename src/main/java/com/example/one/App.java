@@ -7,50 +7,37 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-/**
- * Hello world!
- *
- */
-public class App 
+
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
+public class App extends Application
 {
-    public static void main( String[] args )
+    public static void main( String[] args ){
+        launch( args );
+    }
+
+    public void start( Stage primaryStage )
     {
-        String driver_url = "jdbc:mysql:";
-        String server_url = "//localhost:3306";
-        String bd_name = "/for_dates";
+        primaryStage.setTitle( "Hello world" );
+        Button btn = new Button();
 
-        Connection DB = null;
-
-        String complete_url = driver_url + server_url + bd_name;
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            DB = DriverManager.getConnection(complete_url, "root", "");
-            System.out.print("connection OK!");
-            Statement bddCommand = DB.createStatement();
-            ResultSet bddResponse = bddCommand.executeQuery("SELECT * FROM comments");
-            ResultSetMetaData commentsMetaData = bddResponse.getMetaData();
-            System.out.println("\n**********************************");
-
-            for( int i = 1; i <= commentsMetaData.getColumnCount(); i++ ){
-                System.out.print("\t" + commentsMetaData.getColumnName(i).toString() + "\t |");
+        btn.setText( "Say Hello!" );
+        btn.setOnAction( new EventHandler<ActionEvent>(){
+            public void handle( ActionEvent event){
+                System.out.println( "Hello World!!!!!" );
             }
+        } );
 
-            System.out.println("\t****************************************");
+        StackPane root = new StackPane();
+        root.getChildren().add( btn );
 
-            while( bddResponse.next() ){
-                for( int i = 1; i <= commentsMetaData.getColumnCount(); i++ ){
-                    System.out.print("\t" + bddResponse.getObject(i).toString() + "\t |");
-                }
-                System.out.println("\n---------------------------------");
-            }
-
-            bddResponse.close();
-            bddCommand.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("program finished!");
-        
+        primaryStage.setScene( new Scene( root, 300, 250 ) );
+        primaryStage.show();
     }
 }
